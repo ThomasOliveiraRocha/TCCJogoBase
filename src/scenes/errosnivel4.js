@@ -71,7 +71,7 @@ Agradeço a colaboração!`;
 
 Estamos enfrentando problemas no desenvolvimento do novo projeto de tecnoligia. A área de comunicação precisa melhorar a acessivel nos sistemas da empresa.
 
-O comunicadus sobre a intervençãoes nos processos será enviado ainda esta semana. As intervenções incluem alterações no sistema, além de mudanças no funcionamento dos servidores.
+O comunicadus sobre a intervençãoes nos processos será enviado ainda esta semana. As intervenções incluem alterações no sistema, além de mudanças no funcionamemto dos servidores.
 
 Preciso que todos os envolvidos revisem os documentos de projetoes e auxilio na implementação das melhorias.
 
@@ -210,8 +210,11 @@ Agradeço a colaboração!`;
         };
 
         const textStartY = boxTopY + 60;
-        renderText(this, centerX - 420, textStartY, correctText, []);
-        renderText(this, centerX + 80, textStartY, incorrectText, erros, true);
+        const textPadding = 20;
+
+        renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
+        renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
+
 
         const showResults = (success) => {
             const resultText = success
@@ -226,7 +229,7 @@ Agradeço a colaboração!`;
                 align: 'center',
             }).setOrigin(0.5);
 
-            let explanationY = boxTopY + 10;
+            let explanationY = 150;
             clickedWords.forEach((erro) => {
                 const balloonX = centerX + 500;
 

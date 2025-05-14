@@ -210,8 +210,11 @@ Conto com todos!`;
         };
 
         const textStartY = boxTopY + 60;
-        renderText(this, centerX - 420, textStartY, correctText, []);
-        renderText(this, centerX + 80, textStartY, incorrectText, erros, true);
+        const textPadding = 20;
+
+        renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
+        renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
+
 
         const showResults = (success) => {
             const resultText = success

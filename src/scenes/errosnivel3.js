@@ -216,8 +216,11 @@ Lucas`;
         };
 
         const textStartY = boxTopY + 60;
-        renderText(this, centerX - 420, textStartY, correctText, []);
-        renderText(this, centerX + 80, textStartY, incorrectText, erros, true);
+        const textPadding = 20;
+
+        renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
+        renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
+
 
         const showResults = (success) => {
             const resultText = success
@@ -232,7 +235,7 @@ Lucas`;
                 align: 'center',
             }).setOrigin(0.5);
 
-            let explanationY = boxTopY + 10;
+            let explanationY = 150;
             clickedWords.forEach((erro) => {
                 const balloonX = centerX + 500;
 
