@@ -47,11 +47,12 @@ export default class errosnivel3 extends Phaser.Scene {
         this.add.rectangle(centerX + 80 + emailBoxWidth / 2, boxTopY + emailBoxHeight / 2, emailBoxWidth, emailBoxHeight, 0xffffff)
             .setStrokeStyle(2, 0xff0000);
 
+        const textPadding2 = 5;
         const drawEmailHeader = (x, y) => {
             const style = { fontFamily: 'Arial', fontSize: '12px', fill: '#555' };
-            this.add.text(x, y, `De: Ana <ana@email.com>`, style);
-            this.add.text(x, y + 15, `Assunto: Ajuda urgente`, style);
-            this.add.text(x, y + 30, `Data: 10 de Maio, 14:32`, style);
+            this.add.text(x + textPadding2, y , `De: Ana <ana@email.com>`, style);
+            this.add.text(x + textPadding2, y + 15, `Assunto: Ajuda urgente`, style);
+            this.add.text(x + textPadding2, y + 30, `Data: 10 de Maio, 14:32`, style);
         };
 
         drawEmailHeader(centerX - 420, boxTopY + 10);
@@ -216,7 +217,7 @@ Lucas`;
         };
 
         const textStartY = boxTopY + 60;
-        const textPadding = 20;
+        const textPadding = 5;
 
         renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
         renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
@@ -235,7 +236,7 @@ Lucas`;
                 align: 'center',
             }).setOrigin(0.5);
 
-            let explanationY = 150;
+            let explanationY = 40;
             clickedWords.forEach((erro) => {
                 const balloonX = centerX + 500;
 

@@ -3,11 +3,113 @@ export default class Jogo7Erros extends Phaser.Scene {
         super('Jogo7Erros');
     }
 
-    create() {
-        const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
+    preload() {
+        this.load.image('helpIcon', 'assets/img/help_icon.png');
+    }
 
-        // Título principal com estilo melhorado
+    create() {
+        const { width, height } = this.cameras.main;
+
+        // ----------------------
+        // AJUDA - Ícone + Pop-up com animação
+        // ----------------------
+
+        const helpIcon = this.add.image(width - 30, 30, 'helpIcon')
+            .setOrigin(1, 0)
+            .setScale(0.05)
+            .setInteractive();
+
+        // Armazena o estado original
+        const originalScale = 0.05;
+
+        // Efeito de hover: aumenta levemente com animação
+        helpIcon.on('pointerover', () => {
+            this.tweens.add({
+                targets: helpIcon,
+                scale: originalScale * 1.2, // aumenta 20%
+                duration: 150,
+                ease: 'Power2',
+            });
+        });
+
+        // Volta ao normal quando o mouse sai
+        helpIcon.on('pointerout', () => {
+            this.tweens.add({
+                targets: helpIcon,
+                scale: originalScale,
+                duration: 150,
+                ease: 'Power2',
+            });
+        });
+
+        // Container com os elementos do pop-up
+        const popupContainer = this.add.container(width / 2, height / 2).setDepth(10);
+        popupContainer.setAlpha(0); // Começa invisível
+
+        // Fundo
+        const popupBg = this.add.rectangle(0, 0, 500, 250, 0x000000, 0.85)
+            .setStrokeStyle(2, 0xffffff)
+            .setOrigin(0.5);
+
+        // Texto
+        const popupMsg = this.add.text(-220, -100,
+            '📧 *Phishing* e *Engenharia Social* são técnicas usadas para enganar pessoas e obter informações confidenciais.\n\nNeste jogo dos 7 erros, você precisa encontrar detalhes suspeitos nos e-mails que simulam tentativas reais de golpe.\n\nPreste atenção a erros ortográficos, links falsos, remetentes estranhos e linguagem de urgência.',
+            {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#ffffff',
+                wordWrap: { width: 460 },
+            }
+        );
+
+        // Botão de fechar (X)
+        const closeBtn = this.add.text(230, -110, '✖', {
+            fontSize: '22px',
+            fontFamily: 'Arial',
+            color: '#ffaaaa',
+            fontStyle: 'bold',
+        })
+            .setInteractive()
+            .on('pointerover', () => closeBtn.setColor('#ff5555'))
+            .on('pointerout', () => closeBtn.setColor('#ffaaaa'))
+            .on('pointerdown', () => {
+                this.tweens.add({
+                    targets: popupContainer,
+                    alpha: 0,
+                    duration: 300,
+                    ease: 'Power2'
+                });
+            });
+
+        // Agrupa tudo
+        popupContainer.add([popupBg, popupMsg, closeBtn]);
+
+        // Mostra o pop-up com animação ao entrar
+        this.tweens.add({
+            targets: popupContainer,
+            alpha: 1,
+            duration: 500,
+            ease: 'Power2'
+        });
+
+        // Reabrir ao clicar no ícone
+        helpIcon.on('pointerdown', () => {
+            this.tweens.add({
+                targets: popupContainer,
+                alpha: 1,
+                duration: 300,
+                ease: 'Power2'
+            });
+        });
+
+
+        // ----------------------
+        // SEU CÓDIGO ORIGINAL (botões dos níveis e reset)
+        // ----------------------
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+
         this.add.text(centerX, 50, '🎮 Jogo dos 7 Erros 📧', {
             fontFamily: 'Arial',
             fontSize: '42px',
@@ -30,13 +132,11 @@ export default class Jogo7Erros extends Phaser.Scene {
             { key: 'errosnivel10', label: 'Nível 10' },
         ];
 
-        // Espaço entre as linhas de botões
         const lineSpacing = 60;
         const buttonWidth = 300;
         const firstLineY = centerY - 80;
         const secondLineY = firstLineY + lineSpacing + 40;
 
-        // Função para renderizar os botões de níveis
         const renderLevelButton = (level, x, y) => {
             const levelKey = `nivel${levels.indexOf(level) + 1}`;
             const isCompleted = completedLevels.includes(levelKey);
@@ -50,12 +150,8 @@ export default class Jogo7Erros extends Phaser.Scene {
                 align: 'center',
             })
                 .setOrigin(0.5)
-                .setInteractive()
-                .setStyle({
-                    borderRadius: '12px',
-                });
+                .setInteractive();
 
-            // Efeito hover
             button.on('pointerover', () => {
                 button.setStyle({
                     backgroundColor: '#d0eaff',
@@ -79,24 +175,16 @@ export default class Jogo7Erros extends Phaser.Scene {
             });
         };
 
-        // Calcular as posições para centralizar os botões 3 e 8
-        const startX = centerX - 2 * (buttonWidth + 20); // Começo da linha 1, considerando a centralização do 3
-        let offsetX = 0;
-
-        // Renderizando os botões na primeira linha (1 a 5)
+        const startX = centerX - 2 * (buttonWidth + 20);
         levels.slice(0, 5).forEach((level, index) => {
-            const xPos = startX + index * (buttonWidth + 20);
-            renderLevelButton(level, xPos, firstLineY);
+            renderLevelButton(level, startX + index * (buttonWidth + 20), firstLineY);
         });
 
-        // Renderizando os botões na segunda linha (6 a 10)
-        offsetX = centerX - (buttonWidth * 2 + 20); // Ajustando para a centralização do botão 8
+        const offsetX = centerX - (buttonWidth * 2 + 20);
         levels.slice(5).forEach((level, index) => {
-            const xPos = offsetX + index * (buttonWidth + 20);
-            renderLevelButton(level, xPos, secondLineY);
+            renderLevelButton(level, offsetX + index * (buttonWidth + 20), secondLineY);
         });
 
-        // Botão de reset de progresso (opcional)
         const resetBtn = this.add.text(centerX, secondLineY + lineSpacing + 30, '🔄 Resetar Progresso', {
             fontFamily: 'Arial',
             fontSize: '18px',
