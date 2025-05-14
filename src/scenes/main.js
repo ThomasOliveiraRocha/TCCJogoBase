@@ -7,11 +7,11 @@ import errosnivel2 from './errosnivel2.js';
 import errosnivel3 from './errosnivel3.js';
 import errosnivel4 from './errosnivel4.js';
 import errosnivel5 from './errosnivel5.js';
-// import errosnivel6 from './errosnivel6.js';
-// import errosnivel7 from './errosnivel7.js';
-// import errosnivel8 from './errosnivel8.js';
-// import errosnivel9 from './errosnivel9.js';
-// import errosnivel10 from './errosnivel10.js';
+import errosnivel6 from './errosnivel6.js';
+import errosnivel7 from './errosnivel7.js';
+import errosnivel8 from './errosnivel8.js';
+import errosnivel9 from './errosnivel9.js';
+import errosnivel10 from './errosnivel10.js';
 
 // Obter as dimensões da janela do navegador
 const width = window.innerWidth;
@@ -24,7 +24,7 @@ const config = {
     parent: 'game-container',
     backgroundColor: '#1a1a1a',
     scene: [MenuScene, SelectScene, Jogo7Erros, OptionsScene, 
-        errosnivel1, errosnivel2, errosnivel3, errosnivel4, errosnivel5],
+        errosnivel1, errosnivel2, errosnivel3, errosnivel4, errosnivel5, errosnivel6, errosnivel7, errosnivel8, errosnivel9, errosnivel10],
     scale: {
         mode: Phaser.Scale.RESIZE, // Permitirá que o jogo redimensione com a janela
         autoCenter: Phaser.Scale.CENTER_BOTH, // Centraliza o jogo na tela

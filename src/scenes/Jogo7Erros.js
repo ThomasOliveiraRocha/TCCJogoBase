@@ -42,30 +42,36 @@ export default class Jogo7Erros extends Phaser.Scene {
             });
         });
 
-        // Container com os elementos do pop-up
-        const popupContainer = this.add.container(width / 2, height / 2).setDepth(10);
-        popupContainer.setAlpha(0); // Começa invisível
+        // Container ajustado (desce metade do aumento de altura)
+        const popupContainer = this.add.container(width / 2, height / 2 + 80).setDepth(10);
+        popupContainer.setAlpha(0); // invisível por padrão
 
-        // Fundo
-        const popupBg = this.add.rectangle(0, 0, 500, 250, 0x000000, 0.85)
+        // Fundo mais alto
+        const popupBg = this.add.rectangle(0, 0, 580, 600, 0x000000, 0.85)
             .setStrokeStyle(2, 0xffffff)
             .setOrigin(0.5);
+        // Texto centralizado corretamente
+        const popupMsg = this.add.text(-270, -270, '', {
+            fontFamily: 'VT323',
+            fontSize: '18px',
+            color: '#ffffff',
+            wordWrap: { width: 520 },
+        });
+        popupMsg.setText([
+            '🔐 ',
+            'Phishing e Engenharia Social são técnicas utilizadas por cibercriminosos para enganar usuários e obter dados sigilosos como senhas, números de cartão ou acesso a sistemas internos. Esses ataques costumam chegar por e-mail, se passando por mensagens legítimas de empresas ou colegas de trabalho.\n\n',
+            '🧠 Neste jogo, cada fase simula um e-mail que ',
+            { text: 'parece real', fontStyle: 'bold' },
+            ', mas contém 7 erros escondidos que indicam uma tentativa de golpe. Seu desafio é identificar todos eles.\n\n',
+            '🕵️‍♀️ Preste atenção a:\n• Erros ortográficos ou gramaticais sutis.\n• E-mails com domínios suspeitos ou incompletos.\n• Linguagem de urgência que tenta forçar uma ação rápida.\n• Informações contraditórias ou fora de contexto.\n• Remetentes que imitam nomes confiáveis.\n\n',
+            '🎯 O objetivo é treinar seu olhar para reconhecer armadilhas comuns em golpes digitais. A cada nível, os erros ficam mais difíceis. Seja preciso e desconfie de tudo que parecer estranho!'
+        ]);
 
-        // Texto
-        const popupMsg = this.add.text(-220, -100,
-            '📧 *Phishing* e *Engenharia Social* são técnicas usadas para enganar pessoas e obter informações confidenciais.\n\nNeste jogo dos 7 erros, você precisa encontrar detalhes suspeitos nos e-mails que simulam tentativas reais de golpe.\n\nPreste atenção a erros ortográficos, links falsos, remetentes estranhos e linguagem de urgência.',
-            {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#ffffff',
-                wordWrap: { width: 460 },
-            }
-        );
 
-        // Botão de fechar (X)
-        const closeBtn = this.add.text(230, -110, '✖', {
+        // Botão de fechar ajustado para novo tamanho
+        const closeBtn = this.add.text(270, -300, '✖', {
             fontSize: '22px',
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             color: '#ffaaaa',
             fontStyle: 'bold',
         })
@@ -81,8 +87,9 @@ export default class Jogo7Erros extends Phaser.Scene {
                 });
             });
 
-        // Agrupa tudo
+        // Agrupar tudo
         popupContainer.add([popupBg, popupMsg, closeBtn]);
+
 
         // Mostra o pop-up com animação ao entrar
         this.tweens.add({
@@ -111,7 +118,7 @@ export default class Jogo7Erros extends Phaser.Scene {
         const centerY = height / 2;
 
         this.add.text(centerX, 50, '🎮 Jogo dos 7 Erros 📧', {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '42px',
             fill: '#f8f8ff',
             fontStyle: 'bold',
@@ -142,7 +149,7 @@ export default class Jogo7Erros extends Phaser.Scene {
             const isCompleted = completedLevels.includes(levelKey);
 
             const button = this.add.text(x, y, `${isCompleted ? '✅' : '🔍'} ${level.label}`, {
-                fontFamily: 'Arial',
+                fontFamily: 'VT323',
                 fontSize: '24px',
                 backgroundColor: isCompleted ? '#d4fcd4' : '#f0f0f0',
                 fill: isCompleted ? '#107010' : '#222',
@@ -186,7 +193,7 @@ export default class Jogo7Erros extends Phaser.Scene {
         });
 
         const resetBtn = this.add.text(centerX, secondLineY + lineSpacing + 30, '🔄 Resetar Progresso', {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '18px',
             backgroundColor: '#ffcccc',
             fill: '#990000',
@@ -209,5 +216,19 @@ export default class Jogo7Erros extends Phaser.Scene {
             localStorage.removeItem('completedLevels');
             this.scene.restart();
         });
+
+        const backButton = this.add.text(centerX, centerY + 400, 'Voltar ao Menu de Jogos', {
+            fontFamily: 'VT323',
+            fontSize: '18px',
+            fill: '#ff0000',
+            backgroundColor: '#1a1a1a',
+            padding: { x: 10, y: 5 },
+        })
+            .setOrigin(0.5)
+            .setInteractive()
+            .on('pointerdown', () => this.scene.start('SelectScene'))
+            .on('pointerover', () => backButton.setStyle({ fill: '#ffff00' }))
+            .on('pointerout', () => backButton.setStyle({ fill: '#ff0000' }));
     }
+
 }

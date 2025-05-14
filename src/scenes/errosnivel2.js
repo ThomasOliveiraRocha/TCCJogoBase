@@ -7,6 +7,17 @@ export default class errosnivel2 extends Phaser.Scene {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
+
+        this.add.text(centerX, 20, 'Nível 2: Identifique os Erros', {
+            fontFamily: 'VT323',
+            fontSize: '26px',
+            fill: '#003366',
+            fontStyle: 'bold',
+            stroke: '#ffffff',
+            strokeThickness: 2,
+            shadow: { offsetX: 2, offsetY: 2, color: '#999', blur: 2, fill: true },
+        }).setOrigin(0.5);
+
         let errorsFound = 0;
         let userClicks = 0;
         const maxClicks = 10;
@@ -27,15 +38,15 @@ export default class errosnivel2 extends Phaser.Scene {
         const erros = Object.keys(errorExplanations);
 
         const errorCounter = this.add.text(centerX, 50, `Erros encontrados: 0/${totalErrors}`, {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '20px',
-            fill: '#000',
+            fill: '#003366',
         }).setOrigin(0.5);
 
         const clickCounter = this.add.text(centerX, 80, `Cliques: 0/${maxClicks}`, {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '18px',
-            fill: '#333',
+            fill: '#003366',
         }).setOrigin(0.5);
 
         const boxTopY = centerY - 200;
@@ -52,7 +63,7 @@ export default class errosnivel2 extends Phaser.Scene {
 
         const textPadding2 = 5;
         const drawEmailHeader = (x, y) => {
-            const style = { fontFamily: 'Arial', fontSize: '12px', fill: '#555' };
+            const style = { fontFamily: 'VT323', fontSize: '12px', fill: '#555' };
             this.add.text(x + textPadding2, y, `De: João <joao@email.com>`, style);
             this.add.text(x + textPadding2, y + 15, `Assunto: Pedido urgente`, style);
             this.add.text(x + textPadding2, y + 30, `Data: 12 de Maio, 16:45`, style);
@@ -99,7 +110,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
 
                 words.forEach((word, index) => {
                     const testLine = line + word + ' ';
-                    const testText = scene.add.text(0, 0, testLine, { fontFamily: 'Arial', fontSize: '14px' }).setVisible(false);
+                    const testText = scene.add.text(0, 0, testLine, { fontFamily: 'VT323', fontSize: '14px' }).setVisible(false);
                     const testWidth = testText.width;
                     testText.destroy();
 
@@ -109,7 +120,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                             const clean = w.trim().replace(/[.,!?;-]+$/, '');
                             const isError = errors.includes(clean);
                             const wordObj = scene.add.text(offsetX, offsetY, w + ' ', {
-                                fontFamily: 'Arial',
+                                fontFamily: 'VT323',
                                 fontSize: '14px',
                                 fill: '#000',
                                 wordWrap: { width: maxWidth },
@@ -166,7 +177,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                             const clean = w.trim().replace(/[.,!?;-]+$/, '');
                             const isError = errors.includes(clean);
                             const wordObj = scene.add.text(offsetX, offsetY, w + ' ', {
-                                fontFamily: 'Arial',
+                                fontFamily: 'VT323',
                                 fontSize: '14px',
                                 fill: '#000',
                                 wordWrap: { width: maxWidth },
@@ -231,7 +242,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                 : 'Você não encontrou todos os erros a tempo. Veja os que identificou:';
 
             this.add.text(centerX, centerY + 250, resultText, {
-                fontFamily: 'Arial',
+                fontFamily: 'VT323',
                 fontSize: '20px',
                 fill: success ? '#00cc00' : '#cc0000',
                 wordWrap: { width: 600 },
@@ -243,7 +254,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                 const balloonX = centerX + 500;
 
                 const balloon = this.add.text(balloonX, explanationY, `${erro}:\n${errorExplanations[erro]}`, {
-                    fontFamily: 'Arial',
+                    fontFamily: 'VT323',
                     fontSize: '12px',
                     backgroundColor: '#ffffff',
                     fill: '#000000',
@@ -275,11 +286,24 @@ Nós vemos depois, e espero que todos tenha um bom dia!
             }
 
             showRestartButton();
+
+             const nextLevelButton = this.add.text(centerX, centerY + 360, 'Próximo Nível →', {
+                fontFamily: 'VT323',
+                fontSize: '18px',
+                backgroundColor: '#00cc00',
+                fill: '#fff',
+                padding: { x: 12, y: 6 },
+            })
+                .setOrigin(0.5)
+                .setInteractive()
+                .on('pointerdown', () => this.scene.start('errosnivel3')) // <- Substitua pelo nome real da cena do próximo nível
+                .on('pointerover', () => nextLevelButton.setStyle({ fill: '#000' }))
+                .on('pointerout', () => nextLevelButton.setStyle({ fill: '#fff' }));
         };
 
         const showRestartButton = () => {
             const restartBtn = this.add.text(centerX, centerY + 320, 'Reiniciar Nível', {
-                fontFamily: 'Arial',
+                fontFamily: 'VT323',
                 fontSize: '18px',
                 backgroundColor: '#eeeeee',
                 fill: '#000',
@@ -293,19 +317,19 @@ Nós vemos depois, e espero que todos tenha um bom dia!
         };
 
         this.add.text(centerX - 250, centerY - 280, "E-mail Verdadeiro", {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#00aa00',
         }).setOrigin(0.5);
 
         this.add.text(centerX + 250, centerY - 280, "E-mail com Erros", {
-            fontFamily: 'Arial',
+            fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#aa0000',
         }).setOrigin(0.5);
 
-        const backButton = this.add.text(centerX, centerY + 360, 'Voltar ao Menu de Níveis', {
-            fontFamily: 'Arial',
+        const backButton = this.add.text(centerX, centerY + 400, 'Voltar ao Menu de Níveis', {
+            fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#ff0000',
             backgroundColor: '#1a1a1a',
