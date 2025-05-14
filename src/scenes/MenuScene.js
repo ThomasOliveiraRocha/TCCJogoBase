@@ -25,7 +25,7 @@ export default class MenuScene extends Phaser.Scene {
 
         // Iniciar música de fundo
         if (!this.game.music) {
-            this.game.music = this.sound.add('backgroundMusic', { loop: true, volume: 0.5 });
+            this.game.music = this.sound.add('backgroundMusic', { loop: true, volume: 0.3 });
             this.game.music.play();
         }
 
