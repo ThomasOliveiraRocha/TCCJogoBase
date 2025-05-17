@@ -8,43 +8,67 @@ export default class SelectScene extends Phaser.Scene {
     }
 
     create() {
-        // Centralizar
-        const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
+        const { width, height } = this.cameras.main;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // Fundo escuro com leve transparência
+        this.add.rectangle(centerX, centerY, width, height, 0x000000, 0.6).setDepth(-1);
 
         // Título
-        this.add.text(centerX, centerY - 100, 'Escolha um minigame', {
+        this.add.text(centerX, centerY - 150, '🎮 Escolha um Minigame', {
             fontFamily: 'VT323',
-            fontSize: '28px',
+            fontSize: '42px',
             fill: '#ffffff',
         }).setOrigin(0.5);
 
-        // Botão de Jogo dos 7 Erros
-        const phishingBtn = this.add.text(centerX, centerY, 'Jogo dos 7 Erros (Phishing)', {
-            fontFamily: 'VT323',
-            fontSize: '20px',
-            fill: '#ffcc00',
-        })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerdown', () => {
-                this.scene.start('Jogo7Erros');
+        const createButton = (text, y, color, onClick) => {
+            const btn = this.add.text(centerX, y, text, {
+                fontFamily: 'VT323',
+                fontSize: '26px',
+                fill: color,
+                backgroundColor: '#1e1e1e',
+                padding: { x: 14, y: 8 },
+                align: 'center',
             })
-            .on('pointerover', () => phishingBtn.setStyle({ fill: '#ffff00' }))
-            .on('pointerout', () => phishingBtn.setStyle({ fill: '#ffcc00' }));
+                .setOrigin(0.5)
+                .setInteractive();
 
-        // Botão de voltar
-        const backButton = this.add.text(centerX, centerY + 100, 'Voltar', {
-            fontFamily: 'VT323',
-            fontSize: '24px',
-            fill: '#ff0000',
-        })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerdown', () => {
-                this.scene.start('MenuScene');
-            })
-            .on('pointerover', () => backButton.setStyle({ fill: '#ffff00' }))
-            .on('pointerout', () => backButton.setStyle({ fill: '#ff0000' }));
+            btn.on('pointerover', () => {
+                btn.setStyle({
+                    fill: '#ffff66',
+                    backgroundColor: '#333333',
+                    fontStyle: 'bold',
+                });
+                btn.setScale(1.05);
+            });
+
+            btn.on('pointerout', () => {
+                btn.setStyle({
+                    fill: color,
+                    backgroundColor: '#1e1e1e',
+                    fontStyle: 'normal',
+                });
+                btn.setScale(1);
+            });
+
+            btn.on('pointerdown', onClick);
+            return btn;
+        };
+
+        // Botão Phishing
+        createButton('🕵️‍♂️ Jogo dos 7 Erros (Phishing)', centerY - 30, '#ffcc00', () => {
+            this.scene.start('Jogo7Erros');
+        });
+
+        // Botão Quizz
+        createButton('🧠 Quiz Cibersegurança', centerY + 40, '#66ccff', () => {
+            this.scene.start('Quizz');
+        });
+
+        // Botão Voltar
+        createButton('Voltar ao Menu', centerY + 130, '#ff4444', () => {
+            this.scene.start('MenuScene');
+        });
     }
 }

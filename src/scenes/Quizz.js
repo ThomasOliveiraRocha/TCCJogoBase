@@ -1,6 +1,6 @@
-export default class Jogo7Erros extends Phaser.Scene {
+export default class Quizz extends Phaser.Scene {
     constructor() {
-        super('Jogo7Erros');
+        super('Quizz');
     }
 
     preload() {
@@ -43,11 +43,11 @@ export default class Jogo7Erros extends Phaser.Scene {
         });
 
         // Container ajustado (desce metade do aumento de altura)
-        const popupContainer = this.add.container(width / 2, height / 2 + 80).setDepth(10);
+        const popupContainer = this.add.container(width / 2, height / 2).setDepth(10);
         popupContainer.setAlpha(0); // invisível por padrão
 
         // Fundo mais alto
-        const popupBg = this.add.rectangle(0, 0, 580, 600, 0x000000, 0.85)
+        const popupBg = this.add.rectangle(0, 0, 580, 600, 0x000000, 1)
             .setStrokeStyle(2, 0xffffff)
             .setOrigin(0.5);
         // Texto centralizado corretamente
@@ -59,12 +59,10 @@ export default class Jogo7Erros extends Phaser.Scene {
         });
         popupMsg.setText([
             '🔐 ',
-            'Phishing e Engenharia Social são técnicas utilizadas por cibercriminosos para enganar usuários e obter dados sigilosos como senhas, números de cartão ou acesso a sistemas internos. Esses ataques costumam chegar por e-mail, se passando por mensagens legítimas de empresas ou colegas de trabalho.\n\n',
-            '🧠 Neste jogo, cada fase simula um e-mail que ',
-            { text: 'parece real', fontStyle: 'bold' },
-            ', mas contém 7 erros escondidos que indicam uma tentativa de golpe. Seu desafio é identificar todos eles.\n\n',
-            '🕵️‍♀️ Preste atenção a:\n• Erros ortográficos ou gramaticais sutis.\n• E-mails com domínios suspeitos ou incompletos.\n• Linguagem de urgência que tenta forçar uma ação rápida.\n• Informações contraditórias ou fora de contexto.\n• Remetentes que imitam nomes confiáveis.\n\n',
-            '🎯 O objetivo é treinar seu olhar para reconhecer armadilhas comuns em golpes digitais. A cada nível, os erros ficam mais difíceis. Seja preciso e desconfie de tudo que parecer estranho!'
+            'Este quiz foi desenvolvido para ajudá-lo a compreender e memorizar as principais terminologias usadas na área de cibersegurança.\n\n',
+            '🧠 Com perguntas objetivas e explicações, o quiz facilita o aprendizado dos conceitos essenciais para identificar e se proteger contra ameaças digitais.\n\n',
+            '📚 A prática constante por meio do quiz reforça o conhecimento e prepara você para reconhecer ataques reais no dia a dia.\n\n',
+            '🎯 Use este jogo como uma ferramenta educativa para aprimorar sua segurança online e entender a linguagem técnica do mundo digital.'
         ]);
 
 
@@ -111,13 +109,13 @@ export default class Jogo7Erros extends Phaser.Scene {
 
 
         // ----------------------
-        // SEU CÓDIGO ORIGINAL (botões dos níveis e reset)
+        // BOTÕES DOS NÍVEIS E RESET
         // ----------------------
 
         const centerX = width / 2;
         const centerY = height / 2;
 
-        this.add.text(centerX, 50, '🎮 Jogo dos 7 Erros 📧', {
+        this.add.text(centerX, 50, '🎮 Quizz Game 📧', {
             fontFamily: 'VT323',
             fontSize: '42px',
             fill: '#f8f8ff',
@@ -127,16 +125,16 @@ export default class Jogo7Erros extends Phaser.Scene {
         const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 
         const levels = [
-            { key: 'errosnivel1', label: 'Nível 1' },
-            { key: 'errosnivel2', label: 'Nível 2' },
-            { key: 'errosnivel3', label: 'Nível 3' },
-            { key: 'errosnivel4', label: 'Nível 4' },
-            { key: 'errosnivel5', label: 'Nível 5' },
-            { key: 'errosnivel6', label: 'Nível 6' },
-            { key: 'errosnivel7', label: 'Nível 7' },
-            { key: 'errosnivel8', label: 'Nível 8' },
-            { key: 'errosnivel9', label: 'Nível 9' },
-            { key: 'errosnivel10', label: 'Nível 10' },
+            { key: 'quizz1', label: 'Nível 1' },
+            { key: 'quizz2', label: 'Nível 2' },
+            { key: 'quizz3', label: 'Nível 3' },
+            { key: 'quizz4', label: 'Nível 4' },
+            { key: 'quizz5', label: 'Nível 5' },
+            { key: 'quizz6', label: 'Nível 6' },
+            { key: 'quizz7', label: 'Nível 7' },
+            { key: 'quizz8', label: 'Nível 8' },
+            { key: 'quizz9', label: 'Nível 9' },
+            { key: 'quizz10', label: 'Nível 10' },
         ];
 
         const lineSpacing = 60;
@@ -145,7 +143,7 @@ export default class Jogo7Erros extends Phaser.Scene {
         const secondLineY = firstLineY + lineSpacing + 40;
 
         const renderLevelButton = (level, x, y) => {
-            const levelKey = `nivel${levels.indexOf(level) + 1}`;
+            const levelKey = level.key; // usar a chave direta, ex: 'quizz1'
             const isCompleted = completedLevels.includes(levelKey);
 
             const button = this.add.text(x, y, `${isCompleted ? '✅' : '🔍'} ${level.label}`, {
@@ -246,5 +244,4 @@ export default class Jogo7Erros extends Phaser.Scene {
             })
             .on('pointerdown', () => this.scene.start('SelectScene'));
     }
-
 }
