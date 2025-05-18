@@ -4,8 +4,11 @@ export default class errosnivel1 extends Phaser.Scene {
     }
 
     create() {
-        const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        
 
         this.add.text(centerX, 20, 'Nível 1: Identifique os Erros', {
             fontFamily: 'VT323',
@@ -16,7 +19,6 @@ export default class errosnivel1 extends Phaser.Scene {
             strokeThickness: 2,
             shadow: { offsetX: 2, offsetY: 2, color: '#999', blur: 2, fill: true },
         }).setOrigin(0.5);
-
 
         let errorsFound = 0;
         let userClicks = 0;
@@ -36,48 +38,48 @@ export default class errosnivel1 extends Phaser.Scene {
 
         const erros = Object.keys(errorExplanations);
 
-        const errorCounter = this.add.text(centerX, 50, `Erros encontrados: 0/${totalErrors}`, {
+        const errorCounter = this.add.text(centerX, 60, `Erros encontrados: 0/${totalErrors}`, {
             fontFamily: 'VT323',
             fontSize: '20px',
             fill: '#003366',
         }).setOrigin(0.5);
 
-        const clickCounter = this.add.text(centerX, 80, `Cliques: 0/${maxClicks}`, {
+        const clickCounter = this.add.text(centerX, 90, `Cliques: 0/${maxClicks}`, {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#003366',
         }).setOrigin(0.5);
 
-        const boxTopY = centerY - 200;
-        const emailBoxWidth = 400;
-        const emailBoxHeight = 400;
+        const boxTopY = height * 0.2;
+        const emailBoxWidth = width * 0.28;
+        const emailBoxHeight = height * 0.45;
 
-        // Caixa do e-mail correto
-        this.add.rectangle(centerX - 420 + emailBoxWidth / 2, boxTopY + emailBoxHeight / 2, emailBoxWidth, emailBoxHeight, 0xffffff)
+        this.add.rectangle(centerX - emailBoxWidth - 40, boxTopY, emailBoxWidth, emailBoxHeight, 0xffffff)
+            .setOrigin(0, 0)
             .setStrokeStyle(2, 0x00ff00);
 
-        // Caixa do e-mail com erro
-        this.add.rectangle(centerX + 80 + emailBoxWidth / 2, boxTopY + emailBoxHeight / 2, emailBoxWidth, emailBoxHeight, 0xffffff)
+        this.add.rectangle(centerX + 40, boxTopY, emailBoxWidth, emailBoxHeight, 0xffffff)
+            .setOrigin(0, 0)
             .setStrokeStyle(2, 0xff0000);
 
-        const textPadding2 = 5;
+        const textPadding = 8;
         const drawEmailHeader = (x, y) => {
             const style = { fontFamily: 'VT323', fontSize: '12px', fill: '#555' };
-            this.add.text(x + textPadding2, y, `De: Ana <ana@email.com>`, style);
-            this.add.text(x + textPadding2, y + 15, `Assunto: Ajuda urgente`, style);
-            this.add.text(x + textPadding2, y + 30, `Data: 10 de Maio, 14:32`, style);
+            this.add.text(x + textPadding, y, `De: Ana <ana@email.com>`, style);
+            this.add.text(x + textPadding, y + 15, `Assunto: Ajuda urgente`, style);
+            this.add.text(x + textPadding, y + 30, `Data: 10 de Maio, 14:32`, style);
         };
 
-        drawEmailHeader(centerX - 420, boxTopY + 10);
-        drawEmailHeader(centerX + 80, boxTopY + 10);
+        drawEmailHeader(centerX - emailBoxWidth - 40, boxTopY + 10);
+        drawEmailHeader(centerX + 40, boxTopY + 10);
 
         const correctText = `Estou escrevendo isso com lágrimas nos olhos. Fui ao Reino Unido para uma breve viagem.
 
-Infelizmente, fui roubada no hotel onde estava hospedada, e minha carteira e celular foram levados. 
+Infelizmente, fui roubada no hotel onde estava hospedada, e minha carteira e celular foram levados.
 
 Felizmente, ainda tenho meu passaporte.
 
-Meu voo de volta sai em algumas horas, mas preciso de R$ 1.000 para pagar minha conta do hotel. 
+Meu voo de volta sai em algumas horas, mas preciso de R$ 1.000 para pagar minha conta do hotel.
 
 Por favor, envie para Western Union para que eu possa voltar para casa.
 
@@ -85,19 +87,19 @@ Por favor, envie para Western Union para que eu possa voltar para casa.
 
         const incorrectText = `Estou escrevendo isso com lágrimas nos olhos. Fui ao Reino Unido para uma breve viagem.
 
-Infelismente, fui roubada no hotel onde estava hospedada, e minha carteira e celular foram levados. 
+Infelismente, fui roubada no hotel onde estava hospedada, e minha carteira e celular foram levados.
 
 Felizmente, ainda tenho meu pasaporte.
 
-Meu vôo de volta sai em algumas oras, mas preciso de R$ 1.000 para pagar minha conta do hotel. 
+Meu vôo de volta sai em algumas oras, mas preciso de R$ 1.000 para pagar minha conta do hotel.
 
 Porfavor, envie para Wester Union para que eu posso voltar para casa.
 
 - Ana`;
 
         const renderText = (scene, x, y, text, errors, interactive = false) => {
-            const lineHeight = 20;
-            const maxWidth = 360;
+            const lineHeight = 18;
+            const maxWidth = emailBoxWidth - 20;
             let offsetY = y;
 
             const paragraphs = text.split('\n\n');
@@ -227,20 +229,17 @@ Porfavor, envie para Wester Union para que eu posso voltar para casa.
             });
         };
 
-        const textStartY = boxTopY + 60;
-
-        const textPadding = 5;
-
-        renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
-        renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
-
-
+        renderText(this, centerX - emailBoxWidth - 30, boxTopY + 60, correctText, []);
+        renderText(this, centerX + 50, boxTopY + 60, incorrectText, erros, true);
+        const resultY = boxTopY + emailBoxHeight + 20;
         const showResults = (success) => {
+            
+
             const resultText = success
                 ? 'Parabéns! Você encontrou todos os erros!'
                 : 'Você não encontrou todos os erros a tempo. Veja os que identificou:';
 
-            this.add.text(centerX, centerY + 250, resultText, {
+            this.add.text(centerX, resultY, resultText, {
                 fontFamily: 'VT323',
                 fontSize: '20px',
                 fill: success ? '#00cc00' : '#cc0000',
@@ -248,11 +247,12 @@ Porfavor, envie para Wester Union para que eu posso voltar para casa.
                 align: 'center',
             }).setOrigin(0.5);
 
-            let explanationY = boxTopY + 10;
+            let explanationY = 100;
             clickedWords.forEach((erro) => {
-                const balloonX = centerX + 500;
+                const balloonX = width - 240;
 
-                const balloon = this.add.text(balloonX, explanationY, `${erro}:\n${errorExplanations[erro]}`, {
+                const balloon = this.add.text(balloonX, explanationY, `${erro}:
+${errorExplanations[erro]}`, {
                     fontFamily: 'VT323',
                     fontSize: '12px',
                     backgroundColor: '#ffffff',
@@ -261,22 +261,11 @@ Porfavor, envie para Wester Union para que eu posso voltar para casa.
                     wordWrap: { width: 200 },
                 }).setOrigin(0);
 
-                const found = this.children.getChildren().find(c =>
-                    c.text && c.text.includes(erro) && c.clicked
-                );
-
-                if (found) {
-                    this.add.line(0, 0, found.x + found.width / 2, found.y + 8, balloonX, explanationY + 10, 0x000000)
-                        .setOrigin(0)
-                        .setLineWidth(1);
-                }
-
                 explanationY += balloon.height + 10;
             });
 
-            // ✅ MARCAR COMO CONCLUÍDO (usando array centralizado)
             if (success) {
-                const nivelAtual = 'nivel1';
+                const nivelAtual = 'errosnivel1';
                 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
                 if (!completedLevels.includes(nivelAtual)) {
                     completedLevels.push(nivelAtual);
@@ -284,24 +273,7 @@ Porfavor, envie para Wester Union para que eu posso voltar para casa.
                 }
             }
 
-            showRestartButton();
-            
-            const nextLevelButton = this.add.text(centerX, centerY + 360, 'Próximo Nível →', {
-                fontFamily: 'VT323',
-                fontSize: '18px',
-                backgroundColor: '#00cc00',
-                fill: '#fff',
-                padding: { x: 12, y: 6 },
-            })
-                .setOrigin(0.5)
-                .setInteractive()
-                .on('pointerdown', () => this.scene.start('errosnivel2')) // <- Substitua pelo nome real da cena do próximo nível
-                .on('pointerover', () => nextLevelButton.setStyle({ fill: '#000' }))
-                .on('pointerout', () => nextLevelButton.setStyle({ fill: '#fff' }));
-        };
-
-        const showRestartButton = () => {
-            const restartBtn = this.add.text(centerX, centerY + 320, 'Reiniciar Nível', {
+            const restartBtn = this.add.text(centerX, resultY + 40, 'Reiniciar Nível', {
                 fontFamily: 'VT323',
                 fontSize: '18px',
                 backgroundColor: '#eeeeee',
@@ -313,31 +285,64 @@ Porfavor, envie para Wester Union para que eu posso voltar para casa.
                 .on('pointerdown', () => this.scene.restart())
                 .on('pointerover', () => restartBtn.setStyle({ fill: '#007acc' }))
                 .on('pointerout', () => restartBtn.setStyle({ fill: '#000' }));
+
+            const nextLevelButton = this.add.text(centerX, resultY + 80, 'Próximo Nível →', {
+                fontFamily: 'VT323',
+                fontSize: '18px',
+                backgroundColor: '#00cc00',
+                fill: '#fff',
+                padding: { x: 12, y: 6 },
+            })
+                .setOrigin(0.5)
+                .setInteractive()
+                .on('pointerdown', () => this.scene.start('errosnivel2'))
+                .on('pointerover', () => nextLevelButton.setStyle({ fill: '#000' }))
+                .on('pointerout', () => nextLevelButton.setStyle({ fill: '#fff' }));
+
+            
+
+            
         };
 
-        this.add.text(centerX - 250, centerY - 280, "E-mail Verdadeiro", {
+        const backButton = this.add.text(centerX, resultY + 120, 'Voltar ao Menu de Níveis', {
+            fontFamily: 'VT323',
+            fontSize: '22px',
+            backgroundColor: '#333333',
+            fill: '#ffffff',
+            padding: { x: 20, y: 10 },
+            align: 'center',
+        })
+            .setOrigin(0.5)
+            .setInteractive()
+            .setShadow(2, 2, '#000', 2, true, true)
+            .on('pointerover', () => {
+                backButton.setStyle({
+                    backgroundColor: '#5555aa',
+                    fill: '#ffffaa',
+                    fontStyle: 'bold'
+                });
+                backButton.setScale(1.07);
+            })
+            .on('pointerout', () => {
+                backButton.setStyle({
+                    backgroundColor: '#333333',
+                    fill: '#ffffff',
+                    fontStyle: 'normal'
+                });
+                backButton.setScale(1);
+            })
+            .on('pointerdown', () => this.scene.start('Jogo7Erros'));
+
+        this.add.text(centerX - emailBoxWidth / 2 - 40, boxTopY - 20, "E-mail Verdadeiro", {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#00aa00',
         }).setOrigin(0.5);
 
-        this.add.text(centerX + 250, centerY - 280, "E-mail com Erros", {
+        this.add.text(centerX + emailBoxWidth / 2 + 40, boxTopY - 20, "E-mail com Erros", {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#aa0000',
         }).setOrigin(0.5);
-
-        const backButton = this.add.text(centerX, centerY + 400, 'Voltar ao Menu de Níveis', {
-            fontFamily: 'VT323',
-            fontSize: '18px',
-            fill: '#ff0000',
-            backgroundColor: '#1a1a1a',
-            padding: { x: 10, y: 5 },
-        })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerdown', () => this.scene.start('Jogo7Erros'))
-            .on('pointerover', () => backButton.setStyle({ fill: '#ffff00' }))
-            .on('pointerout', () => backButton.setStyle({ fill: '#ff0000' }));
     }
 }

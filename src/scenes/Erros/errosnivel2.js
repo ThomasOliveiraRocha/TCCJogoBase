@@ -4,9 +4,10 @@ export default class errosnivel2 extends Phaser.Scene {
     }
 
     create() {
-        const centerX = this.cameras.main.width / 2;
-        const centerY = this.cameras.main.height / 2;
-
+        const width = this.cameras.main.width;
+        const height = this.cameras.main.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
 
         this.add.text(centerX, 20, 'Nível 2: Identifique os Erros', {
             fontFamily: 'VT323',
@@ -34,43 +35,42 @@ export default class errosnivel2 extends Phaser.Scene {
             "Nós": "A forma correta no contexto é 'Nos', sem acento. O uso incorreto de pronomes pode indicar que o autor está tentando copiar uma estrutura de e-mail sem domínio da língua, levantando suspeitas."
         };
 
-
         const erros = Object.keys(errorExplanations);
 
-        const errorCounter = this.add.text(centerX, 50, `Erros encontrados: 0/${totalErrors}`, {
+        const errorCounter = this.add.text(centerX, 60, `Erros encontrados: 0/${totalErrors}`, {
             fontFamily: 'VT323',
             fontSize: '20px',
             fill: '#003366',
         }).setOrigin(0.5);
 
-        const clickCounter = this.add.text(centerX, 80, `Cliques: 0/${maxClicks}`, {
+        const clickCounter = this.add.text(centerX, 90, `Cliques: 0/${maxClicks}`, {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#003366',
         }).setOrigin(0.5);
 
-        const boxTopY = centerY - 200;
-        const emailBoxWidth = 400;
-        const emailBoxHeight = 400;
+        const boxTopY = height * 0.2;
+        const emailBoxWidth = width * 0.28;
+        const emailBoxHeight = height * 0.45;
 
-        // Caixa do e-mail correto
-        this.add.rectangle(centerX - 420 + emailBoxWidth / 2, boxTopY + emailBoxHeight / 2, emailBoxWidth, emailBoxHeight, 0xffffff)
+        this.add.rectangle(centerX - emailBoxWidth - 40, boxTopY, emailBoxWidth, emailBoxHeight, 0xffffff)
+            .setOrigin(0, 0)
             .setStrokeStyle(2, 0x00ff00);
 
-        // Caixa do e-mail com erro
-        this.add.rectangle(centerX + 80 + emailBoxWidth / 2, boxTopY + emailBoxHeight / 2, emailBoxWidth, emailBoxHeight, 0xffffff)
+        this.add.rectangle(centerX + 40, boxTopY, emailBoxWidth, emailBoxHeight, 0xffffff)
+            .setOrigin(0, 0)
             .setStrokeStyle(2, 0xff0000);
 
-        const textPadding2 = 5;
+        const textPadding = 8;
         const drawEmailHeader = (x, y) => {
             const style = { fontFamily: 'VT323', fontSize: '12px', fill: '#555' };
-            this.add.text(x + textPadding2, y, `De: João <joao@email.com>`, style);
-            this.add.text(x + textPadding2, y + 15, `Assunto: Pedido urgente`, style);
-            this.add.text(x + textPadding2, y + 30, `Data: 12 de Maio, 16:45`, style);
+            this.add.text(x + textPadding, y, `De: João <joao@email.com>`, style);
+            this.add.text(x + textPadding, y + 15, `Assunto: Pedido urgente`, style);
+            this.add.text(x + textPadding, y + 30, `Data: 12 de Maio, 16:45`, style);
         };
 
-        drawEmailHeader(centerX - 420, boxTopY + 10);
-        drawEmailHeader(centerX + 80, boxTopY + 10);
+        drawEmailHeader(centerX - emailBoxWidth - 40, boxTopY + 10);
+        drawEmailHeader(centerX + 40, boxTopY + 10);
 
         const correctText = `Eu estou indo para o trabalho agora.
 
@@ -97,8 +97,8 @@ Nós vemos depois, e espero que todos tenha um bom dia!
 - Joao`;
 
         const renderText = (scene, x, y, text, errors, interactive = false) => {
-            const lineHeight = 20;
-            const maxWidth = 360;
+            const lineHeight = 18;
+            const maxWidth = emailBoxWidth - 20;
             let offsetY = y;
 
             const paragraphs = text.split('\n\n');
@@ -228,20 +228,18 @@ Nós vemos depois, e espero que todos tenha um bom dia!
             });
         };
 
-        const textStartY = boxTopY + 60;
+        renderText(this, centerX - emailBoxWidth - 30, boxTopY + 60, correctText, []);
+        renderText(this, centerX + 50, boxTopY + 60, incorrectText, erros, true);
 
-        const textPadding = 5;
-
-        renderText(this, centerX - 420 + textPadding, textStartY, correctText, []);
-        renderText(this, centerX + 80 + textPadding, textStartY, incorrectText, erros, true);
-
-
+        const resultY = boxTopY + emailBoxHeight + 20;
         const showResults = (success) => {
+            
+
             const resultText = success
                 ? 'Parabéns! Você encontrou todos os erros!'
                 : 'Você não encontrou todos os erros a tempo. Veja os que identificou:';
 
-            this.add.text(centerX, centerY + 250, resultText, {
+            this.add.text(centerX, resultY, resultText, {
                 fontFamily: 'VT323',
                 fontSize: '20px',
                 fill: success ? '#00cc00' : '#cc0000',
@@ -249,11 +247,12 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                 align: 'center',
             }).setOrigin(0.5);
 
-            let explanationY = 100;
+            let explanationY = 50;
             clickedWords.forEach((erro) => {
-                const balloonX = centerX + 500;
+                const balloonX = width - 240;
 
-                const balloon = this.add.text(balloonX, explanationY, `${erro}:\n${errorExplanations[erro]}`, {
+                const balloon = this.add.text(balloonX, explanationY, `${erro}:
+${errorExplanations[erro]}`, {
                     fontFamily: 'VT323',
                     fontSize: '12px',
                     backgroundColor: '#ffffff',
@@ -262,22 +261,11 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                     wordWrap: { width: 200 },
                 }).setOrigin(0);
 
-                const found = this.children.getChildren().find(c =>
-                    c.text && c.text.includes(erro) && c.clicked
-                );
-
-                if (found) {
-                    this.add.line(0, 0, found.x + found.width / 2, found.y + 8, balloonX, explanationY + 10, 0x000000)
-                        .setOrigin(0)
-                        .setLineWidth(1);
-                }
-
                 explanationY += balloon.height + 10;
             });
 
-            // ✅ MARCAR COMO CONCLUÍDO (usando array centralizado)
             if (success) {
-                const nivelAtual = 'nivel2';
+                const nivelAtual = 'errosnivel2';
                 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
                 if (!completedLevels.includes(nivelAtual)) {
                     completedLevels.push(nivelAtual);
@@ -285,24 +273,7 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                 }
             }
 
-            showRestartButton();
-
-             const nextLevelButton = this.add.text(centerX, centerY + 360, 'Próximo Nível →', {
-                fontFamily: 'VT323',
-                fontSize: '18px',
-                backgroundColor: '#00cc00',
-                fill: '#fff',
-                padding: { x: 12, y: 6 },
-            })
-                .setOrigin(0.5)
-                .setInteractive()
-                .on('pointerdown', () => this.scene.start('errosnivel3')) // <- Substitua pelo nome real da cena do próximo nível
-                .on('pointerover', () => nextLevelButton.setStyle({ fill: '#000' }))
-                .on('pointerout', () => nextLevelButton.setStyle({ fill: '#fff' }));
-        };
-
-        const showRestartButton = () => {
-            const restartBtn = this.add.text(centerX, centerY + 320, 'Reiniciar Nível', {
+            const restartBtn = this.add.text(centerX, resultY + 40, 'Reiniciar Nível', {
                 fontFamily: 'VT323',
                 fontSize: '18px',
                 backgroundColor: '#eeeeee',
@@ -314,31 +285,63 @@ Nós vemos depois, e espero que todos tenha um bom dia!
                 .on('pointerdown', () => this.scene.restart())
                 .on('pointerover', () => restartBtn.setStyle({ fill: '#007acc' }))
                 .on('pointerout', () => restartBtn.setStyle({ fill: '#000' }));
-        };
 
-        this.add.text(centerX - 250, centerY - 280, "E-mail Verdadeiro", {
+            const nextLevelButton = this.add.text(centerX, resultY + 80, 'Próximo Nível →', {
+                fontFamily: 'VT323',
+                fontSize: '18px',
+                backgroundColor: '#00cc00',
+                fill: '#fff',
+                padding: { x: 12, y: 6 },
+            })
+                .setOrigin(0.5)
+                .setInteractive()
+                .on('pointerdown', () => this.scene.start('errosnivel3'))
+                .on('pointerover', () => nextLevelButton.setStyle({ fill: '#000' }))
+                .on('pointerout', () => nextLevelButton.setStyle({ fill: '#fff' }));
+
+            
+
+
+        };
+        const backButton = this.add.text(centerX, resultY + 120, 'Voltar ao Menu de Níveis', {
+                fontFamily: 'VT323',
+                fontSize: '22px',
+                backgroundColor: '#333333',
+                fill: '#ffffff',
+                padding: { x: 20, y: 10 },
+                align: 'center',
+            })
+                .setOrigin(0.5)
+                .setInteractive()
+                .setShadow(2, 2, '#000', 2, true, true)
+                .on('pointerover', () => {
+                    backButton.setStyle({
+                        backgroundColor: '#5555aa',
+                        fill: '#ffffaa',
+                        fontStyle: 'bold'
+                    });
+                    backButton.setScale(1.07);
+                })
+                .on('pointerout', () => {
+                    backButton.setStyle({
+                        backgroundColor: '#333333',
+                        fill: '#ffffff',
+                        fontStyle: 'normal'
+                    });
+                    backButton.setScale(1);
+                })
+                .on('pointerdown', () => this.scene.start('Jogo7Erros'));
+
+        this.add.text(centerX - emailBoxWidth / 2 - 40, boxTopY - 20, "E-mail Verdadeiro", {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#00aa00',
         }).setOrigin(0.5);
 
-        this.add.text(centerX + 250, centerY - 280, "E-mail com Erros", {
+        this.add.text(centerX + emailBoxWidth / 2 + 40, boxTopY - 20, "E-mail com Erros", {
             fontFamily: 'VT323',
             fontSize: '18px',
             fill: '#aa0000',
         }).setOrigin(0.5);
-
-        const backButton = this.add.text(centerX, centerY + 400, 'Voltar ao Menu de Níveis', {
-            fontFamily: 'VT323',
-            fontSize: '18px',
-            fill: '#ff0000',
-            backgroundColor: '#1a1a1a',
-            padding: { x: 10, y: 5 },
-        })
-            .setOrigin(0.5)
-            .setInteractive()
-            .on('pointerdown', () => this.scene.start('Jogo7Erros'))
-            .on('pointerover', () => backButton.setStyle({ fill: '#ffff00' }))
-            .on('pointerout', () => backButton.setStyle({ fill: '#ff0000' }));
     }
 }
