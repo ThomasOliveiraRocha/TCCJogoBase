@@ -20,8 +20,7 @@ https://thomasoliveirarocha.github.io/TCCJogoBase/
 
 A versão completa do trabalho acadêmico em PDF está disponível no link abaixo:
 
-https://drive.google.com/file/d/1PUxsOnLurKpwNn56m4HayUewYZCDL7kB/view?usp=sharing
-
+https://drive.google.com/file/d/1HBXADPZRqrM7jUyj5McxAuws-Bq4z3ng/view?usp=sharing
 ---
 
 ## Sobre o Jogo
